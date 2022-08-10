@@ -1,6 +1,8 @@
+import {JsonValue} from "../d";
+
 interface useJson {
 
-    fromJson( json: object ): boolean;
+    fromJson( json: JsonValue ): boolean;
     toJson(): object;
 
 }

@@ -1,39 +1,52 @@
 import useJson from "./interface/useJson";
+import {ItemJson, JsonValue} from "./d";
 
 class Item implements useJson {
 
-    private parentId: string;
-    private id: string;
-    private data: object;
-    private childrens: Array<Item>;
+    parentId: string;
+    id: string;
+    open: boolean;
+    sort: number;
+    html: HTMLElement;
+    data: object;
 
-    constructor( parentId: string = null, id: string, data: object = {}, childrens: Array<> ) {
+    constructor( json: ItemJson ) {
 
-        this.id = id;
-
-    }
-
-
-    static fromJson( json: object ): Item {
-
-        return new Item( json.parentId, json.id, json.data, json.childrens );
+        this.fromJson( json );
 
     }
 
-    fromJson( json: object ): boolean {
+    fromJson( json: ItemJson ): boolean {
 
-
-
-        return false;
+        this.parentId = json.parentId;
+        this.id = json.id;
+        this.open = json.open;
+        this.sort = json.sort;
+        this.html = document.createElement('div');
+        this.html.innerHTML = json.html;
+        this.data = json.data;
+        return true;
     }
 
-    toJson(): object {
+    toJson(): ItemJson {
+
         return {
             parentId: this.parentId,
             id: this.id,
+            open: this.open,
+            sort: this.sort,
+            html: this.html.innerHTML,
             data: this.data,
-            childrens: this.childrens.map( children => children.toJson() )
         };
+
+    }
+
+    expand(){
+        this.open = true;
+    }
+
+    collapse(){
+        this.open = false;
     }
 
 }
